@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mango Leaf Disease Detection</title>
+</head>
+
+<body>
+    <h1>Mango Leaf Disease Detection</h1>
+    <form action="/predict" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*">
+        <input type="submit" value="Upload">
+    </form>
+    <div id="result">
+        <!-- Result will be displayed here -->
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            document.getElementById('result').innerHTML = `
+                <h2>Result:</h2>
+                <p><strong>Disease:</strong> ${data.disease}</p>
+                <p><strong>Drug:</strong> ${data.drug}</p>
+                <p><strong>Procedures:</strong> ${data.procedures}</p>
+                <p><strong>Duration:</strong> ${data.duration}</p>
+            `;
+        });
+    </script>
+</body>
+
+</html>
